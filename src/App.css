@@ -4,3 +4,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.field-label {
+  color: #787878;
+  min-width: 8rem;
+  white-space: break-word;
+}
