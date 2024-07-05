@@ -1,5 +1,4 @@
 import { Box, Grid, TextField } from "@mui/material";
-import * as React from "react";
 import { FormData } from "./Form";
 
 export default function StepTwo({

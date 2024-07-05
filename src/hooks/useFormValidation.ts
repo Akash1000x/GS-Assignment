@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import * as React from "react";
 import { FormData } from "../Components/Form/Form";
 
 type ValidationErrors = { [key: string]: string };
 
 export function useFormValidation(initialData: FormData) {
-  const [formData, setFormData] = useState<FormData>(initialData);
-  const [errors, setErrors] = useState<ValidationErrors>({});
-  const [step, setStep] = useState<number>(0);
-  const [disableNext, setDisableNext] = useState<boolean>(true);
+  const [formData, setFormData] = React.useState<FormData>(initialData);
+  const [errors, setErrors] = React.useState<ValidationErrors>({});
+  const [step, setStep] = React.useState<number>(0);
+  const [disableNext, setDisableNext] = React.useState<boolean>(true);
 
   function validateField(name: string, value: string) {
     let errorMsg = "";
@@ -38,7 +38,7 @@ export function useFormValidation(initialData: FormData) {
     return errorMsg;
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedFormData = localStorage.getItem("formData");
     if (storedFormData) {
       console.log(step);
@@ -47,7 +47,7 @@ export function useFormValidation(initialData: FormData) {
     }
   }, [step]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const isValidFormData = () => {
       switch (step) {
         case 0:
@@ -87,6 +87,7 @@ export function useFormValidation(initialData: FormData) {
     });
   };
 
+  //Validate the field onBlur event to show the error message whene user skip the field by without entering the value
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setErrors((prevErrors) => ({

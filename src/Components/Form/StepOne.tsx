@@ -1,6 +1,5 @@
 import { Box, TextField, Grid } from "@mui/material";
 import { FormData } from "./Form";
-import * as React from "react";
 
 export default function StepOne({
   formData,
