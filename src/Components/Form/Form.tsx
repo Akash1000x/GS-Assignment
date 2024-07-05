@@ -1,8 +1,9 @@
-import { Box, Card, CardContent, Stepper, Step, StepLabel } from "@mui/material";
+import { Box, Card, CardContent, Stepper, Step, StepLabel, Button, Stack } from "@mui/material";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import FinalStep from "./FinalStep";
 import * as React from "react";
+import { useFormValidation } from "../../hooks/useFormValidation";
 
 export type FormData = {
   firstName: string;
@@ -16,29 +17,46 @@ export type FormData = {
   zipCode: string;
 };
 
+const INITIAL_DATA: FormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  addressLineOne: "",
+  addressLineTwo: "",
+  phone: "",
+  state: "",
+  city: "",
+  zipCode: "",
+};
+
 export default function Form() {
-  const [step, setStep] = React.useState<number>(0);
-  const [formData, setFormData] = React.useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    addressLineOne: "",
-    addressLineTwo: "",
-    phone: "",
-    state: "",
-    city: "",
-    zipCode: "",
-  });
+  const { formData, errors, handleChange, handleBlur, handleNext, handlePrev, step, disableNext } =
+    useFormValidation(INITIAL_DATA);
 
   const steps = [
-    { title: "Step 1", component: <StepOne formData={formData} setFormData={setFormData} setStep={setStep} /> },
-    { title: "Step 2", component: <StepTwo formData={formData} setFormData={setFormData} setStep={setStep} /> },
-    { title: "Submit", component: <FinalStep formData={formData} setStep={setStep} /> },
+    {
+      title: "Step 1",
+      component: <StepOne formData={formData} errors={errors} handleChange={handleChange} handleBlur={handleBlur} />,
+    },
+    {
+      title: "Step 2",
+      component: <StepTwo formData={formData} errors={errors} handleChange={handleChange} handleBlur={handleBlur} />,
+    },
+    { title: "Submit", component: <FinalStep formData={formData} /> },
   ];
+
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (step === steps.length - 1) {
+      alert("Successful Account Creation");
+    } else {
+      handleNext();
+    }
+  }
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Card sx={{ marginTop: 8, width: "100%", maxWidth: 600 }}>
+      <Card sx={{ marginTop: 8, width: "100%", maxWidth: 600, bgcolor: "#f2f2f8" }}>
         <CardContent>
           <Stepper activeStep={step} alternativeLabel>
             {steps.map((step, index) => (
@@ -50,9 +68,24 @@ export default function Form() {
         </CardContent>
       </Card>
 
-      <Card sx={{ width: "100%", maxWidth: 600, marginTop: 4 }}>
-        <CardContent>{steps[step].component}</CardContent>
-      </Card>
+      <form onSubmit={onSubmit}>
+        <Card sx={{ width: "100%", maxWidth: 600, marginTop: 4, bgcolor: "#f2f2f8" }}>
+          <CardContent>
+            <div>{steps[step].component}</div>
+
+            <Stack direction={"row"} justifyContent={"space-between"} marginTop={2}>
+              {step > 0 && (
+                <Button variant="contained" onClick={handlePrev}>
+                  Prev
+                </Button>
+              )}
+              <Button variant="contained" type="submit" disabled={disableNext && step !== steps.length - 1}>
+                {step === steps.length - 1 ? "Submit" : "Next"}
+              </Button>
+            </Stack>
+          </CardContent>
+        </Card>
+      </form>
     </Box>
   );
 }
