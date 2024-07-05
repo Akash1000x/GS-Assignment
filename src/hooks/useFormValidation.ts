@@ -41,8 +41,6 @@ export function useFormValidation(initialData: FormData) {
   React.useEffect(() => {
     const storedFormData = localStorage.getItem("formData");
     if (storedFormData) {
-      console.log(step);
-
       setFormData(JSON.parse(storedFormData));
     }
   }, [step]);
