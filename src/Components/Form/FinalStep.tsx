@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { FormData } from "./Form";
 
 const formFields = [
@@ -13,17 +13,7 @@ const formFields = [
   { key: "zipCode", label: "Zip Code" },
 ];
 
-export default function FinalStep({
-  formData,
-  setStep,
-}: {
-  formData: FormData;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
-  const handlePrev = () => {
-    setStep((prev) => prev - 1);
-  };
-
+export default function FinalStep({ formData }: { formData: FormData }) {
   return (
     <div>
       <Box sx={{ marginBottom: 2, padding: 2, borderRadius: 1, overflowX: "auto" }}>
@@ -35,15 +25,6 @@ export default function FinalStep({
           </Stack>
         ))}
       </Box>
-
-      <Stack direction={"row"} justifyContent={"space-between"} marginTop={2}>
-        <Button variant="contained" onClick={handlePrev}>
-          Prev
-        </Button>
-        <Button variant="contained" color="primary" type="submit">
-          Submit
-        </Button>
-      </Stack>
     </div>
   );
 }
