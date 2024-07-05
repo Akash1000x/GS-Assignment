@@ -4,6 +4,7 @@ import StepTwo from "./StepTwo";
 import FinalStep from "./FinalStep";
 import * as React from "react";
 import { useFormValidation } from "../../hooks/useFormValidation";
+import useDebounce from "../../hooks/useDebounce";
 
 export type FormData = {
   firstName: string;
@@ -45,10 +46,20 @@ export default function Form() {
     { title: "Submit", component: <FinalStep formData={formData} /> },
   ];
 
+  const SendUserData = async () => {
+    try {
+      alert("User data submitted successfully");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const debouncedSendUserData = useDebounce(SendUserData, 1000);
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (step === steps.length - 1) {
-      alert("Successful Account Creation");
+      debouncedSendUserData();
     } else {
       handleNext();
     }
@@ -68,11 +79,10 @@ export default function Form() {
         </CardContent>
       </Card>
 
-      <form onSubmit={onSubmit}>
-        <Card sx={{ width: "100%", maxWidth: 600, marginTop: 4, bgcolor: "#f2f2f8" }}>
+      <form onSubmit={onSubmit} style={{ width: "100%" }}>
+        <Card sx={{ maxWidth: 600, marginTop: 4, bgcolor: "#f2f2f8" }}>
           <CardContent>
             <div>{steps[step].component}</div>
-
             <Stack direction={"row"} marginTop={2} justifyContent="flex-end">
               {step > 0 && (
                 <Button variant="contained" onClick={handlePrev} sx={{ justifySelf: "self-start" }}>
