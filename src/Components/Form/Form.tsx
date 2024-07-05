@@ -73,13 +73,18 @@ export default function Form() {
           <CardContent>
             <div>{steps[step].component}</div>
 
-            <Stack direction={"row"} justifyContent={"space-between"} marginTop={2}>
+            <Stack direction={"row"} marginTop={2} justifyContent="flex-end">
               {step > 0 && (
-                <Button variant="contained" onClick={handlePrev}>
+                <Button variant="contained" onClick={handlePrev} sx={{ justifySelf: "self-start" }}>
                   Prev
                 </Button>
               )}
-              <Button variant="contained" type="submit" disabled={disableNext && step !== steps.length - 1}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={disableNext && step !== steps.length - 1}
+                sx={{ marginLeft: "auto" }}
+              >
                 {step === steps.length - 1 ? "Submit" : "Next"}
               </Button>
             </Stack>
