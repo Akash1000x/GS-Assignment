@@ -1,10 +1,9 @@
-import { Box, Card, CardContent, Stepper, Step, StepLabel, Button, Stack } from "@mui/material";
+import { Box, Card, CardContent, Stepper, Step, StepLabel, Button, Stack, CircularProgress } from "@mui/material";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import FinalStep from "./FinalStep";
 import * as React from "react";
 import { useFormValidation } from "../../hooks/useFormValidation";
-import useDebounce from "../../hooks/useDebounce";
 
 export type FormData = {
   firstName: string;
@@ -33,6 +32,7 @@ const INITIAL_DATA: FormData = {
 export default function Form() {
   const { formData, errors, handleChange, handleBlur, handleNext, handlePrev, step, disableNext } =
     useFormValidation(INITIAL_DATA);
+  const [loading, setLoading] = React.useState(false);
 
   const steps = [
     {
@@ -46,23 +46,29 @@ export default function Form() {
     { title: "Submit", component: <FinalStep formData={formData} /> },
   ];
 
-  const SendUserData = async () => {
-    try {
-      alert("User data submitted successfully");
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const debouncedSendUserData = useDebounce(SendUserData, 1000);
-
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (step === steps.length - 1) {
-      debouncedSendUserData();
+      if (loading) return;
+      try {
+        setLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        alert("Form submitted successfully");
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     } else {
       handleNext();
     }
+  }
+
+  if (loading) {
+    return (
+      <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
