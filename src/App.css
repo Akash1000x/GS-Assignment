@@ -10,3 +10,9 @@
   min-width: 8rem;
   white-space: break-word;
 }
+
+main {
+  padding-top: 1rem;
+  background: #d2d7f7;
+  height: 100vh;
+}

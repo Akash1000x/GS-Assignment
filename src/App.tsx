@@ -4,11 +4,13 @@ import Form from "./Components/Form/Form";
 
 function App() {
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 2 }}>
-      <Container maxWidth="sm">
-        <Form />
+    <main>
+      <Container maxWidth="lg" className="container">
+        <Container maxWidth="sm">
+          <Form />
+        </Container>
       </Container>
-    </Container>
+    </main>
   );
 }
 
