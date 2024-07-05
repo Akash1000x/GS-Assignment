@@ -15,16 +15,14 @@ const formFields = [
 
 export default function FinalStep({ formData }: { formData: FormData }) {
   return (
-    <div>
-      <Box sx={{ marginBottom: 2, padding: 2, borderRadius: 1, overflowX: "auto" }}>
-        <h3>Review Your Information</h3>
-        {formFields.map((field, index) => (
-          <Stack key={index} direction={"row"} gap={2} marginY={1} marginLeft={2}>
-            <p className="field-label">{field.label}:</p>
-            <p>{formData[field.key as keyof FormData] ?? "-"}</p>{" "}
-          </Stack>
-        ))}
-      </Box>
-    </div>
+    <Box sx={{ marginBottom: 2, overflowX: "auto" }}>
+      <h3>Review Your Information</h3>
+      {formFields.map((field, index) => (
+        <Stack key={index} direction={"row"} gap={2} marginY={1} marginLeft={2}>
+          <p className="field-label">{field.label}:</p>
+          <p>{formData[field.key as keyof FormData] ?? "-"}</p>{" "}
+        </Stack>
+      ))}
+    </Box>
   );
 }
