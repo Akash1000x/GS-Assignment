@@ -8,6 +8,7 @@ export function useFormValidation(initialData: FormData) {
   const [errors, setErrors] = React.useState<ValidationErrors>({});
   const [step, setStep] = React.useState<number>(0);
   const [disableNext, setDisableNext] = React.useState<boolean>(true);
+  const [direction, setDirection] = React.useState(1);
 
   function validateField(name: string, value: string) {
     let errorMsg = "";
@@ -96,10 +97,12 @@ export function useFormValidation(initialData: FormData) {
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
+    setDirection(1);
   };
 
   const handlePrev = () => {
     setStep((prevStep) => prevStep - 1);
+    setDirection(-1);
   };
 
   return {
@@ -112,5 +115,6 @@ export function useFormValidation(initialData: FormData) {
     step,
     disableNext,
     setDisableNext,
+    direction,
   };
 }

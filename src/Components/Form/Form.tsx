@@ -4,6 +4,7 @@ import StepTwo from "./StepTwo";
 import FinalStep from "./FinalStep";
 import * as React from "react";
 import { useFormValidation } from "../../hooks/useFormValidation";
+import { motion } from "framer-motion";
 
 export type FormData = {
   firstName: string;
@@ -30,7 +31,7 @@ const INITIAL_DATA: FormData = {
 };
 
 export default function Form() {
-  const { formData, errors, handleChange, handleBlur, handleNext, handlePrev, step, disableNext } =
+  const { formData, errors, handleChange, handleBlur, handleNext, handlePrev, step, disableNext, direction } =
     useFormValidation(INITIAL_DATA);
   const [loading, setLoading] = React.useState(false);
 
@@ -70,6 +71,20 @@ export default function Form() {
       </div>
     );
   }
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -100 : 100,
+      opacity: 0,
+    }),
+  };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
@@ -88,7 +103,17 @@ export default function Form() {
       <form onSubmit={onSubmit} style={{ width: "100%" }}>
         <Card sx={{ maxWidth: 600, marginTop: 4, bgcolor: "#f2f2f8" }}>
           <CardContent>
-            <div>{steps[step].component}</div>
+            <motion.div
+              key={step}
+              custom={direction}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              variants={variants}
+              transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
+            >
+              {steps[step].component}
+            </motion.div>
             <Stack direction={"row"} marginTop={2} justifyContent="flex-end">
               {step > 0 && (
                 <Button variant="contained" onClick={handlePrev} sx={{ justifySelf: "self-start" }}>
